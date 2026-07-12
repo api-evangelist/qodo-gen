@@ -1,0 +1,33 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/qodo-gen-openapi.yml
+summary:
+  types:
+  - apiKey
+schemes:
+- name: qodoApiKey
+  type: apiKey
+  in: header
+  keyName: Authorization
+  description: >-
+    Qodo API key / token issued from the Qodo dashboard, used by the Qodo Command
+    CLI and hosted platform surfaces. Enterprise supports BYOK (bring your own LLM
+    keys). Exact header conventions are not publicly documented and are modeled.
+  sources:
+  - openapi/qodo-gen-openapi.yml
+- name: webhookSecret
+  type: apiKey
+  in: header
+  keyName: X-Hub-Signature-256
+  description: >-
+    Shared secret configured when installing the single-tenant Qodo Merge Git
+    webhook, verified on each inbound event from the Git provider (GitHub / GitLab
+    / Bitbucket / Azure DevOps).
+  sources:
+  - https://docs.qodo.ai/qodo-documentation/qodo-merge/getting-started/setup-and-installation/github/qodo-single-tenant-github
+notes: >-
+  Qodo does not publish a documented public REST API with a formal auth scheme.
+  Qodo Merge (Git app) authenticates through the Git provider's app installation
+  and a webhook secret; the Qodo Command CLI authenticates to the Qodo platform
+  with an account token. Schemes above are derived/modeled, not lifted from a
+  vendor OpenAPI.

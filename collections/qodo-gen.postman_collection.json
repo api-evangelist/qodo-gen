@@ -1,0 +1,116 @@
+{
+  "info": {
+    "name": "Qodo Platform (Modeled Capability Surfaces)",
+    "description": "MODELED collection. Qodo (formerly CodiumAI) does not publish a single documented public REST API. These requests model Qodo's capability areas - Qodo Merge PR review tools (built on the open-source PR-Agent engine, invoked as PR comment commands), Qodo Gen test generation, and the Qodo Command CLI agent surface - plus the one real documented endpoint, the single-tenant Qodo Merge Git webhook receiver (/api/v1/webhook). Treat non-webhook requests as capability descriptors, not a stable REST contract. See github.com/qodo-ai/pr-agent (MIT).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      { "key": "token", "value": "{{qodoApiKey}}", "type": "string" }
+    ]
+  },
+  "variable": [
+    { "key": "mergeBaseUrl", "value": "https://qodo-merge.your-company.st.qodo.ai/api/v1", "type": "string" },
+    { "key": "commandBaseUrl", "value": "http://localhost:3000", "type": "string" },
+    { "key": "qodoApiKey", "value": "", "type": "string" },
+    { "key": "webhookSecret", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Qodo Merge",
+      "item": [
+        {
+          "name": "Git webhook receiver (documented, single-tenant)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{}" },
+            "url": { "raw": "{{mergeBaseUrl}}/webhook", "host": ["{{mergeBaseUrl}}"], "path": ["webhook"] },
+            "description": "Real documented endpoint. The Git provider POSTs pull request / comment events here; Qodo Merge runs review tools and posts results back to the PR. Authenticated with a shared webhook secret."
+          }
+        },
+        {
+          "name": "Review a pull request (modeled - /review)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"provider\": \"github\",\n  \"repository\": \"owner/name\",\n  \"pull_request\": 1\n}" },
+            "url": { "raw": "{{mergeBaseUrl}}/pull-requests/review", "host": ["{{mergeBaseUrl}}"], "path": ["pull-requests", "review"] },
+            "description": "Models the PR-Agent /review tool, normally invoked as a PR comment command."
+          }
+        },
+        {
+          "name": "Describe a pull request (modeled - /describe)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"provider\": \"github\",\n  \"repository\": \"owner/name\",\n  \"pull_request\": 1\n}" },
+            "url": { "raw": "{{mergeBaseUrl}}/pull-requests/describe", "host": ["{{mergeBaseUrl}}"], "path": ["pull-requests", "describe"] },
+            "description": "Models the PR-Agent /describe tool (title, summary, walkthrough, labels)."
+          }
+        },
+        {
+          "name": "Suggest code improvements (modeled - /improve)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"provider\": \"github\",\n  \"repository\": \"owner/name\",\n  \"pull_request\": 1\n}" },
+            "url": { "raw": "{{mergeBaseUrl}}/pull-requests/improve", "host": ["{{mergeBaseUrl}}"], "path": ["pull-requests", "improve"] },
+            "description": "Models the PR-Agent /improve tool - ranked, committable code suggestions."
+          }
+        },
+        {
+          "name": "Ask about a pull request (modeled - /ask)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"provider\": \"github\",\n  \"repository\": \"owner/name\",\n  \"pull_request\": 1,\n  \"question\": \"Why was this changed?\"\n}" },
+            "url": { "raw": "{{mergeBaseUrl}}/pull-requests/ask", "host": ["{{mergeBaseUrl}}"], "path": ["pull-requests", "ask"] },
+            "description": "Models the PR-Agent /ask tool - free-text Q&A about the PR or specific lines."
+          }
+        },
+        {
+          "name": "Add documentation (modeled - /add_docs, /update_changelog)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"provider\": \"github\",\n  \"repository\": \"owner/name\",\n  \"pull_request\": 1\n}" },
+            "url": { "raw": "{{mergeBaseUrl}}/pull-requests/add-docs", "host": ["{{mergeBaseUrl}}"], "path": ["pull-requests", "add-docs"] },
+            "description": "Models the PR-Agent documentation tools - docstrings/help docs and changelog updates."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Qodo Gen",
+      "item": [
+        {
+          "name": "Generate tests for code (modeled - Qodo Gen / Qodo Cover)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"language\": \"python\",\n  \"code\": \"def add(a, b):\\n    return a + b\"\n}" },
+            "url": { "raw": "{{mergeBaseUrl}}/generate/tests", "host": ["{{mergeBaseUrl}}"], "path": ["generate", "tests"] },
+            "description": "Models Qodo Gen / Qodo Cover test generation, delivered in practice through the IDE plugin and CLI."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Qodo Command",
+      "item": [
+        {
+          "name": "Run an agent over HTTP (modeled - CLI --webhook)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"prompt\": \"Review the current diff\",\n  \"arguments\": {}\n}" },
+            "url": { "raw": "{{commandBaseUrl}}/agents/:agent/run", "host": ["{{commandBaseUrl}}"], "path": ["agents", ":agent", "run"], "variable": [{ "key": "agent", "value": "code-review" }] },
+            "description": "Models the local HTTP surface the Qodo Command CLI (@qodo/command) exposes when an agent is launched with --webhook. Self-hosted, not a Qodo-hosted endpoint."
+          }
+        }
+      ]
+    }
+  ]
+}

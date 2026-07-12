@@ -1,0 +1,36 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: qodo.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep 21 15:24:17 2026 GMT
+  hsts: false
+  note: Apex 301-redirects to https://www.qodo.ai/; HSTS is set on www, not the apex.
+- host: www.qodo.ai
+  https: true
+  tls_version: TLSv1.3
+  hsts: true
+  hsts_max_age: 63072000
+- host: docs.qodo.ai
+  https: true
+  tls_version: TLSv1.3
+  hsts: true
+  hsts_max_age: 63072000
+domains:
+- domain: qodo.ai
+  dnssec: false
+  caa:
+  - '0 issue "godaddy.com"'
+  - '0 issue "letsencrypt.org"'
+  - '0 issue "pki.goog; cansignhttpexchanges=yes"'
+  - '0 issue "ssl.com"'
+  - '0 issue "amazon.com"'
+  - '0 issue "comodoca.com"'
+  - '0 issue "digicert.com; cansignhttpexchanges=yes"'
+  - '0 iodef "mailto:devops@qodo.ai"'
+  spf: true
+  spf_record: v=spf1 include:_netblocks.google.com include:sendgrid.net include:stspg-customer.com -all
+  dmarc: true
+  dmarc_policy: quarantine

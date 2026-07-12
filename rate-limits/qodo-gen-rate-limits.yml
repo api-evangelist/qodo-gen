@@ -1,0 +1,71 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Qodo
+providerId: qodo-gen
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- AI Coding Assistant
+- Code Review
+- Test Generation
+- Rate Limiting
+- Quotas
+description: >-
+  Qodo does not publish fixed numeric per-minute request rate limits for a public
+  API. Because Qodo's surfaces are an IDE plugin, a webhook-driven Git app, and a
+  CLI rather than an open REST API, consumption is governed by a monthly credit
+  budget rather than a request-per-second cap. On the hosted platform, PR reviews
+  and agent runs draw down pooled credits (a 2,500-credit pack is roughly 18 PR
+  reviews per month); the Trial is unlimited for 14 days, and customers can set a
+  monthly overage cap on Pro Team. When self-hosting the open-source PR-Agent
+  engine, the effective limits are those of your own LLM provider (tokens per
+  minute, requests per minute) and your infrastructure.
+notes: >-
+  No numeric per-endpoint rate limits are documented as of the review date.
+  Throughput on the hosted platform is bounded by credit balance and any
+  customer-set overage cap; on self-hosted PR-Agent it is bounded by your LLM
+  provider's rate limits. Verify current credit allowances at qodo.ai/pricing.
+sources:
+- https://www.qodo.ai/pricing/
+- https://docs.qodo.ai/
+- https://github.com/qodo-ai/pr-agent
+responseCodes:
+  throttled: 429
+limits:
+- name: Hosted Credit Budget
+  scope: account
+  metric: credits
+  limit: per plan (pooled monthly credit packs)
+  notes: PR reviews and agent runs consume pooled credits; 2,500 credits is about 18 reviews/month.
+- name: Trial Usage
+  scope: account
+  metric: requests
+  limit: unlimited for 14 days
+  notes: The 14-day Trial grants unlimited credits and unlimited reviews.
+- name: Pro Team Overage Cap
+  scope: account
+  metric: credits
+  limit: customer-set
+  notes: Customers set a monthly overage cap on the Pro Team plan.
+- name: Public API Request Rate
+  scope: account
+  metric: requests
+  limit: not published
+  notes: No documented public REST API and no published per-minute request cap.
+- name: Self-Hosted PR-Agent Throughput
+  scope: deployment
+  metric: requests
+  limit: bound by your LLM provider
+  notes: Self-hosting shifts limits to your own LLM provider (TPM/RPM) and infrastructure.
+policies:
+- name: Credit-Based Metering
+  description: Hosted usage is metered in credits pooled across the team rather than by a request-rate limit.
+- name: Overage Cap
+  description: Pro Team accounts can cap monthly overage to control spend once packs are exhausted.
+- name: Backoff Strategy
+  description: Clients of any HTTP surface (single-tenant webhook, CLI --webhook) should implement exponential backoff with jitter and honor Retry-After on 429 responses.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

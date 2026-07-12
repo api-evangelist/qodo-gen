@@ -1,0 +1,168 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Qodo
+providerId: qodo-gen
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- AI Coding Assistant
+- Code Review
+- Test Generation
+- Developer Tools
+- Plans
+description: >-
+  Qodo (formerly CodiumAI) is sold as a seat-plus-credits SaaS. A 14-day Trial
+  gives unlimited credits and reviews. The Pro Team plan is 30 US dollars per
+  month per seat (up to 30 users) and draws on pooled monthly credit packs
+  (2,500 / 5,000 / 20,000 credits) at roughly 0.012 US dollars per credit, with
+  PR reviews consuming credits (a 2,500-credit pack is about 18 reviews per
+  month). Enterprise is custom-priced for 30-plus users with SSO/SAML, audit
+  logs, BYOK, advanced analytics, and single-tenant SaaS or on-premises
+  deployment. Qodo states it does not offer a permanent free tier, but open
+  source projects can qualify for free access through a separate program. The
+  underlying PR-Agent engine is open source (MIT) and free to self-host - in
+  that model you pay only for your own LLM API usage and infrastructure.
+notes: >-
+  Prices reflect the public Qodo pricing page as of the review date and are not
+  reconciled. Historical CodiumAI / earlier Qodo tiers advertised a free
+  Developer tier (about 250 credits and 30 PR reviews per month) and Teams at
+  30 to 38 US dollars per user per month with 2,500 credits - superseded by the
+  current Trial / Pro Team / Enterprise structure. Verify live numbers at
+  qodo.ai/pricing. Self-hosting PR-Agent shifts cost entirely to your LLM
+  provider and infrastructure.
+sources:
+- https://www.qodo.ai/pricing/
+- https://docs.qodo.ai/
+- https://github.com/qodo-ai/pr-agent
+plans:
+- id: qodo-open-source-pr-agent
+  name: PR-Agent Open Source (Self-Hosted)
+  type: free
+  description: >-
+    The open-source PR-Agent engine that powers Qodo Merge, MIT-licensed and
+    self-hostable as a CLI, GitHub Action, or webhook server across GitHub,
+    GitLab, Bitbucket, Azure DevOps, and Gitea. Free to run; you supply your own
+    LLM API key and infrastructure.
+  entries:
+  - label: Self-Hosted Usage
+    name: self_hosted_usage
+    type: usage
+    metric: requests
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: free (self-hosted; you pay your own LLM and infrastructure costs)
+    userMultiplied: false
+  elements:
+  - name: PR Review Tools
+  - name: Describe, Improve, Ask, Add Docs
+  - name: CLI, GitHub Action, Webhook Server
+  - name: Bring Your Own LLM Key
+- id: qodo-trial
+  name: Trial
+  type: trial
+  description: >-
+    14-day free trial of the hosted Qodo platform with unlimited credits and
+    unlimited reviews, including agentic PR review, the rules system, Git and IDE
+    integrations, pre-PR review skills, and the dashboard and analytics.
+  entries:
+  - label: Trial Period
+    name: trial_period
+    type: flat
+    metric: days
+    limit: 14
+    timeFrame: day
+    geo: global
+    unit: 1
+    price: free for 14 days
+    userMultiplied: false
+  elements:
+  - name: Agentic PR Code Review
+  - name: Rules System
+  - name: Git and IDE Integrations
+  - name: Dashboard and Analytics
+- id: qodo-pro-team
+  name: Pro Team
+  type: paid
+  description: >-
+    Seat-based team plan at 30 US dollars per month, for up to 30 users, with no
+    annual commitment. Draws on pooled monthly credit packs shared across the
+    team; credits fund PR reviews and agent runs.
+  entries:
+  - label: Seat
+    name: seat
+    type: flat
+    metric: seats
+    limit: 30
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: 30 USD per month
+    userMultiplied: true
+  - label: Credit Pack - 2500
+    name: credits_2500
+    type: usage
+    metric: credits
+    limit: 2500
+    timeFrame: month
+    geo: global
+    unit: 2500
+    price: pooled credit pack (about 18 reviews per month); about 0.012 USD per credit
+    userMultiplied: false
+  - label: Credit Pack - 5000
+    name: credits_5000
+    type: usage
+    metric: credits
+    limit: 5000
+    timeFrame: month
+    geo: global
+    unit: 5000
+    price: pooled credit pack (about 36 reviews per month)
+    userMultiplied: false
+  - label: Credit Pack - 20000
+    name: credits_20000
+    type: usage
+    metric: credits
+    limit: 20000
+    timeFrame: month
+    geo: global
+    unit: 20000
+    price: pooled credit pack (about 144 reviews per month)
+    userMultiplied: false
+  elements:
+  - name: Everything in Trial
+  - name: Switch or Add Credit Packs Anytime
+  - name: Standard Support
+  - name: Customer-Set Monthly Overage Cap
+  - name: Strict Data Retention
+- id: qodo-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom-priced plan for 30-plus users on annual contracts. Adds SSO/SAML and
+    audit logs, advanced analytics, advanced self-learning, BYOK (bring your own
+    LLM keys), single-tenant SaaS or on-premises deployment, and priority support
+    with a dedicated CSM.
+  entries:
+  - label: Enterprise Agreement
+    name: enterprise
+    type: flat
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false
+  elements:
+  - name: SSO/SAML and Audit Logs
+  - name: Advanced Analytics Dashboard
+  - name: BYOK - Bring Your Own LLM Keys
+  - name: Single-Tenant SaaS or On-Premises
+  - name: Priority Support with Dedicated CSM
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

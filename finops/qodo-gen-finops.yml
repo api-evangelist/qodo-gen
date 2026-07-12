@@ -1,0 +1,103 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Qodo
+providerId: qodo-gen
+created: '2026-07-11'
+modified: '2026-07-11'
+reconciled: false
+tags:
+- AI Coding Assistant
+- Code Review
+- Test Generation
+- Developer Tools
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Qodo spend. Qodo (formerly CodiumAI) is billed as a seat-based
+  SaaS with pooled usage credits. The dominant cost drivers are the number of
+  seats (Pro Team at 30 US dollars per user per month, up to 30 users) and credit
+  consumption, where PR reviews and agent runs draw down pooled monthly credit
+  packs (2,500 / 5,000 / 20,000 credits at roughly 0.012 US dollars per credit).
+  Enterprise is a negotiated annual contract that adds SSO, single-tenant or
+  on-prem deployment, and BYOK, which shifts LLM inference cost onto the
+  customer's own model provider. When the open-source PR-Agent engine is
+  self-hosted, there is no Qodo invoice at all - cost becomes your LLM API usage
+  plus infrastructure.
+notes: >-
+  Per-credit and Enterprise rates are not reconciled here; verify at
+  qodo.ai/pricing. Two distinct cost models exist: hosted Qodo (seats + credits,
+  optionally BYOK for LLM) and self-hosted PR-Agent (LLM API usage + infra, no
+  Qodo fee).
+sources:
+- https://www.qodo.ai/pricing/
+- https://docs.qodo.ai/
+- https://github.com/qodo-ai/pr-agent
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Qodo
+serviceCategory: AI and Developer Tools
+billingModel:
+  pricingCategory: Seat-Plus-Usage
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Qodo
+  ServiceCategory: AI and Developer Tools
+  ProviderName: Qodo
+  PublisherName: Qodo
+  InvoiceIssuerName: Qodo
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Seat-Plus-Usage
+meters:
+- name: seats
+  description: Active user seats on the Pro Team plan, billed per user per month.
+  unit: seats
+  aggregation: max
+  dimensions:
+  - account
+  - team
+- name: credits
+  description: Pooled credits consumed by PR reviews and agent runs on the hosted platform.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - account
+  - team
+- name: pr_reviews
+  description: Pull request reviews performed by Qodo Merge; each consumes credits.
+  unit: reviews
+  aggregation: sum
+  dimensions:
+  - account
+  - repository
+- name: byok_llm_tokens
+  description: LLM tokens billed by the customer's own model provider under BYOK / self-hosted PR-Agent (no Qodo invoice).
+  unit: tokens
+  aggregation: sum
+  dimensions:
+  - account
+  - model
+principles:
+- name: Visibility
+  description: Track seats, pooled credit burn, and PR reviews per repository and team; under BYOK/self-hosted, monitor LLM token spend at the model provider.
+- name: Allocation
+  description: Map seats and credit consumption to teams and repositories so review spend ties back to cost centers.
+- name: Optimization
+  description: Right-size seats, choose the credit pack that matches review volume, set the Pro Team overage cap, and self-host PR-Agent when volume makes owned infrastructure cheaper than credits.
+- name: Accountability
+  description: Assign an owner per team; review monthly credit burn against the pack allowance and overage cap.
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

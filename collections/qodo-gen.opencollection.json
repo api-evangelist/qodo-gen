@@ -1,0 +1,106 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qodo Platform (Modeled Capability Surfaces)",
+    "version": "1.0",
+    "description": "MODELED collection. Qodo (formerly CodiumAI) does not publish a single documented public REST API. These requests model Qodo's capability areas - Qodo Merge PR review tools (built on open-source PR-Agent, invoked as PR comment commands), Qodo Gen test generation, and the Qodo Command CLI agent surface - plus the one real documented endpoint, the single-tenant Qodo Merge Git webhook receiver. Treat non-webhook requests as capability descriptors, not a stable REST contract."
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{qodoApiKey}}"
+    }
+  },
+  "items": [
+    {
+      "info": { "name": "Qodo Merge", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Git webhook receiver (documented, single-tenant).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1/webhook",
+            "body": { "type": "json", "data": "{}" }
+          },
+          "docs": "Real documented endpoint. The Git provider POSTs pull request / comment events here; Qodo Merge runs review tools and posts results back to the PR. Authenticated with a shared webhook secret."
+        },
+        {
+          "info": { "name": "Review a pull request (modeled - /review).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1/pull-requests/review",
+            "body": { "type": "json", "data": "{\"provider\":\"github\",\"repository\":\"owner/name\",\"pull_request\":1}" }
+          },
+          "docs": "Models the PR-Agent /review tool, normally invoked as a PR comment command."
+        },
+        {
+          "info": { "name": "Describe a pull request (modeled - /describe).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1/pull-requests/describe",
+            "body": { "type": "json", "data": "{\"provider\":\"github\",\"repository\":\"owner/name\",\"pull_request\":1}" }
+          },
+          "docs": "Models the PR-Agent /describe tool (title, summary, walkthrough, labels)."
+        },
+        {
+          "info": { "name": "Suggest code improvements (modeled - /improve).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1/pull-requests/improve",
+            "body": { "type": "json", "data": "{\"provider\":\"github\",\"repository\":\"owner/name\",\"pull_request\":1}" }
+          },
+          "docs": "Models the PR-Agent /improve tool - ranked, committable code suggestions."
+        },
+        {
+          "info": { "name": "Ask about a pull request (modeled - /ask).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1/pull-requests/ask",
+            "body": { "type": "json", "data": "{\"provider\":\"github\",\"repository\":\"owner/name\",\"pull_request\":1,\"question\":\"Why was this changed?\"}" }
+          },
+          "docs": "Models the PR-Agent /ask tool - free-text Q&A about the PR or specific lines."
+        },
+        {
+          "info": { "name": "Add documentation (modeled - /add_docs, /update_changelog).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1/pull-requests/add-docs",
+            "body": { "type": "json", "data": "{\"provider\":\"github\",\"repository\":\"owner/name\",\"pull_request\":1}" }
+          },
+          "docs": "Models the PR-Agent documentation tools - docstrings/help docs and changelog updates."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Qodo Gen", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Generate tests for code (modeled - Qodo Gen / Qodo Cover).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1/generate/tests",
+            "body": { "type": "json", "data": "{\"language\":\"python\",\"code\":\"def add(a, b):\\n    return a + b\"}" }
+          },
+          "docs": "Models Qodo Gen / Qodo Cover test generation, delivered in practice through the IDE plugin and CLI."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Qodo Command", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Run an agent over HTTP (modeled - CLI --webhook).", "type": "http" },
+          "http": {
+            "method": "POST",
+            "url": "http://localhost:3000/agents/:agent/run",
+            "params": [
+              { "name": "agent", "value": "code-review", "type": "path", "description": "Name of the configured agent from agents.toml." }
+            ],
+            "body": { "type": "json", "data": "{\"prompt\":\"Review the current diff\",\"arguments\":{}}" }
+          },
+          "docs": "Models the local HTTP surface the Qodo Command CLI (@qodo/command) exposes when an agent is launched with --webhook. Self-hosted, not a Qodo-hosted endpoint."
+        }
+      ]
+    }
+  ]
+}

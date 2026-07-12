@@ -1,0 +1,178 @@
+aid: qodo-gen
+url: https://raw.githubusercontent.com/api-evangelist/qodo-gen/refs/heads/main/apis.yml
+name: Qodo
+kind: company
+description: Qodo (formerly CodiumAI) is an AI code quality and integrity platform
+  for the whole software development lifecycle. Its products include Qodo Gen (an
+  AI coding assistant IDE plugin for code generation, chat, and test generation),
+  Qodo Merge (an agentic pull request review app for GitHub, GitLab, Bitbucket, and
+  Azure DevOps, built on the open-source PR-Agent project), Qodo Command / Qodo Gen
+  CLI (a terminal agent runner installed via npm that can serve agents as HTTP APIs
+  or MCP services), Qodo Cover (test coverage automation), and Qodo Aware (codebase
+  context). Qodo's public surfaces are primarily an IDE plugin, a Git application
+  driven by webhooks and PR comment commands, and a CLI - the hosted platform REST
+  surface is gated. The open-source PR-Agent engine (MIT) that powers Qodo Merge is
+  self-hostable as a CLI, GitHub Action, or webhook server.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- AI Coding Assistant
+- Code Review
+- Test Generation
+- Developer Tools
+- LLM
+- AI
+- Pull Request Review
+- Code Quality
+- Agents
+- Open Source
+created: '2026-07-11'
+modified: '2026-07-11'
+specificationVersion: '0.19'
+apis:
+- aid: qodo-gen:qodo-gen-merge-pr-review-api
+  name: Qodo Merge PR Review
+  tags:
+  - Code Review
+  - Pull Request Review
+  - AI Coding Assistant
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.qodo.ai/code-review
+  baseURL: https://qodo-merge.st.qodo.ai/api/v1
+  properties:
+  - url: https://docs.qodo.ai/code-review
+    type: Documentation
+  - url: https://qodo-merge-docs.qodo.ai/tools/review/
+    type: APIReference
+  - url: openapi/qodo-gen-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/qodo-ai/pr-agent
+    type: SourceCode
+  description: Agentic pull request review surface. Qodo Merge is a hosted Git
+    application (GitHub, GitLab, Bitbucket, Azure DevOps) that reviews pull requests
+    automatically and on demand via the "/review" PR comment command. The hosted
+    service is driven by a Git webhook (single-tenant path /api/v1/webhook) rather
+    than a public REST API; endpoints are modeled from the open-source PR-Agent
+    engine and the single-tenant webhook surface.
+- aid: qodo-gen:qodo-gen-merge-code-suggestions-api
+  name: Qodo Merge Code Suggestions
+  tags:
+  - Code Review
+  - Code Suggestions
+  - Developer Tools
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://qodo-merge-docs.qodo.ai/tools/improve/
+  baseURL: https://qodo-merge.st.qodo.ai/api/v1
+  properties:
+  - url: https://qodo-merge-docs.qodo.ai/tools/improve/
+    type: Documentation
+  - url: openapi/qodo-gen-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/qodo-ai/pr-agent
+    type: SourceCode
+  description: Committable code improvement suggestions for a pull request, invoked
+    with the "/improve" PR comment command. Returns inline, ranked suggestions the
+    developer can accept. Modeled from the PR-Agent improve tool; not exposed as a
+    standalone documented REST endpoint.
+- aid: qodo-gen:qodo-gen-merge-describe-api
+  name: Qodo Merge PR Description
+  tags:
+  - Code Review
+  - Documentation
+  - Developer Tools
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://qodo-merge-docs.qodo.ai/tools/describe/
+  baseURL: https://qodo-merge.st.qodo.ai/api/v1
+  properties:
+  - url: https://qodo-merge-docs.qodo.ai/tools/describe/
+    type: Documentation
+  - url: openapi/qodo-gen-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/qodo-ai/pr-agent
+    type: SourceCode
+  description: Automatic pull request title, summary, walkthrough, and labels,
+    invoked with the "/describe" PR comment command. Modeled from the PR-Agent
+    describe tool.
+- aid: qodo-gen:qodo-gen-merge-ask-chat-api
+  name: Qodo Merge Ask and Chat
+  tags:
+  - Chat
+  - AI Coding Assistant
+  - LLM
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://qodo-merge-docs.qodo.ai/tools/ask/
+  baseURL: https://qodo-merge.st.qodo.ai/api/v1
+  properties:
+  - url: https://qodo-merge-docs.qodo.ai/tools/ask/
+    type: Documentation
+  - url: openapi/qodo-gen-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/qodo-ai/pr-agent
+    type: SourceCode
+  description: Free-text question answering about a pull request or specific lines,
+    invoked with the "/ask" PR comment command. Modeled from the PR-Agent ask tool.
+- aid: qodo-gen:qodo-gen-test-generation-api
+  name: Qodo Gen Test Generation
+  tags:
+  - Test Generation
+  - AI Coding Assistant
+  - Developer Tools
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.qodo.ai/qodo-documentation/qodo-gen
+  baseURL: https://qodo-merge.st.qodo.ai/api/v1
+  properties:
+  - url: https://docs.qodo.ai/qodo-documentation/qodo-gen
+    type: Documentation
+  - url: openapi/qodo-gen-openapi.yml
+    type: OpenAPI
+  description: AI test generation - the capability CodiumAI was founded on - surfaced
+    through the Qodo Gen IDE plugin (VS Code, JetBrains) and Qodo Cover. Generates
+    unit tests and edge cases for a function, class, or file. Delivered through the
+    IDE plugin and CLI rather than a documented public REST endpoint; modeled here
+    as a capability area.
+- aid: qodo-gen:qodo-gen-command-agent-api
+  name: Qodo Command Agent API
+  tags:
+  - Agents
+  - Developer Tools
+  - Automation
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.qodo.ai/qodo-documentation/qodo-command
+  baseURL: http://localhost:3000
+  properties:
+  - url: https://docs.qodo.ai/qodo-documentation/qodo-command
+    type: Documentation
+  - url: https://docs.qodo.ai/qodo-documentation/qodo-command/features/creating-and-managing-agents
+    type: APIReference
+  - url: openapi/qodo-gen-openapi.yml
+    type: OpenAPI
+  - url: https://github.com/qodo-ai/command
+    type: SourceCode
+  description: The Qodo Command / Qodo Gen CLI (npm @qodo/command) runs configurable
+    AI agents defined in agents.toml. With the --webhook flag an agent is served as
+    a local HTTP API, and with --mcp an agent becomes a callable MCP service for
+    orchestrators such as LangChain. The HTTP surface is self-hosted (default local
+    host/port); endpoints are modeled from the CLI documentation.
+common:
+- type: Authentication
+  url: authentication/qodo-gen-authentication.yml
+- type: DomainSecurity
+  url: security/qodo-gen-domain-security.yml
+- type: GitHubOrganization
+  url: https://github.com/qodo-ai
+- type: LinkedIn
+  url: https://www.linkedin.com/company/qodoai
+- type: Website
+  url: https://www.qodo.ai
+- type: Documentation
+  url: https://docs.qodo.ai
+- type: Plans
+  url: plans/qodo-gen-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/qodo-gen-rate-limits.yml
+- type: FinOps
+  url: finops/qodo-gen-finops.yml
+- url: https://www.qodo.ai/blog/
+  type: Blog
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com

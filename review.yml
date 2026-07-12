@@ -1,0 +1,140 @@
+aid: qodo-gen
+name: Qodo
+review:
+  question: Does Qodo expose a documented public WebSocket API?
+  answer: false
+  date: '2026-07-11'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    No AsyncAPI document was authored. Qodo's public surfaces are an IDE plugin
+    (Qodo Gen), a Git application driven by webhooks and pull request comment
+    commands (Qodo Merge), and a terminal agent runner (Qodo Command / Qodo Gen
+    CLI). None of these expose a documented server-push transport (WebSocket or
+    SSE) on a public Qodo endpoint. Qodo Merge's realtime behavior is delivered
+    by receiving Git provider webhooks (HTTP POST) and posting results back to
+    the pull request over the Git provider's own REST API - it is not a bidirectional
+    WebSocket. The Qodo Command CLI can serve an agent as a local HTTP API
+    (--webhook) or an MCP service (--mcp, JSON-RPC over stdio), still not a
+    public WebSocket. There is nothing to model in AsyncAPI.
+findings:
+  summary: |
+    Qodo (formerly CodiumAI, rebranded 2024) does not publish a documented public
+    WebSocket API, and it does not publish a single documented public REST API for
+    its hosted platform either. Qodo is an AI code quality / coding-assistant
+    platform. Its public, developer-facing surfaces are: (1) Qodo Gen, an IDE
+    plugin for VS Code and JetBrains (code generation, chat, and AI test
+    generation - the CodiumAI founding capability); (2) Qodo Merge, a hosted Git
+    application for GitHub, GitLab, Bitbucket, and Azure DevOps that reviews pull
+    requests, invoked via PR comment commands (/review, /describe, /improve, /ask,
+    /add_docs, /update_changelog) and driven by a Git webhook - single-tenant
+    installs receive events at a documented path /api/v1/webhook on
+    qodo-merge.<tenant>.st.qodo.ai; and (3) Qodo Command / Qodo Gen CLI, an npm
+    package (@qodo/command) that runs configurable agents (agents.toml) and can
+    expose an agent as a local HTTP API (--webhook) or an MCP service (--mcp).
+    The engine behind Qodo Merge is the open-source PR-Agent project (MIT,
+    github.com/qodo-ai/pr-agent), self-hostable as a CLI (pip install pr-agent),
+    a GitHub Action, or a webhook server. No public, bidirectional streaming
+    WebSocket (ws:// or wss://) endpoint is documented anywhere in Qodo's product
+    surfaces as of the review date.
+  openSource: |
+    Yes - the core PR review engine is open source. PR-Agent is MIT-licensed
+    (github.com/qodo-ai/pr-agent), installable via `pip install pr-agent`, and can
+    run as a CLI, a GitHub Action, or a self-hosted webhook server across GitHub,
+    GitLab, Bitbucket, Azure DevOps, and Gitea. Qodo Merge is the hosted/managed
+    commercial version of that engine. The Qodo Command CLI (github.com/qodo-ai/command)
+    and its agent playbooks (github.com/qodo-ai/agents) are also public. The Qodo
+    Gen IDE plugin and the hosted Qodo platform (dashboard, single-tenant/on-prem)
+    are commercial and not open source.
+  transports:
+    - protocol: Webhook
+      scheme: https
+      baseURL: https://qodo-merge.{tenant}.st.qodo.ai/api/v1/webhook
+      documented: true
+      note: >-
+        Real, documented inbound Git webhook receiver for single-tenant Qodo Merge.
+        Git provider POSTs PR/comment events; server-to-server HTTP, not WebSocket.
+    - protocol: PR Comment Command
+      scheme: https
+      documented: true
+      note: >-
+        Primary invocation model for Qodo Merge tools - developers type /review,
+        /describe, /improve, /ask, /add_docs, /update_changelog as PR comments.
+        Not a WebSocket; mediated by the Git provider.
+    - protocol: HTTP (CLI --webhook)
+      scheme: http
+      documented: true
+      note: >-
+        Qodo Command CLI can serve a configured agent as a local HTTP API. Host and
+        port are chosen at launch; self-hosted, not a public Qodo endpoint.
+    - protocol: MCP (CLI --mcp)
+      scheme: stdio
+      documented: true
+      note: >-
+        Qodo Command CLI can expose an agent as an MCP service (JSON-RPC), callable
+        by orchestrators such as LangChain. Not a WebSocket.
+    - protocol: REST (hosted platform)
+      scheme: https
+      documented: false
+      note: >-
+        No single documented public REST API is published for the hosted Qodo
+        platform. Single-tenant installs reference a private "API Base Host"
+        supplied by the customer's Qodo DevOps team.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: >-
+        No WebSocket endpoint is documented anywhere in Qodo's product surfaces
+        (Qodo Gen, Qodo Merge, Qodo Command) as of the review date.
+  endpointsConfirmedRest:
+    - POST https://qodo-merge.{tenant}.st.qodo.ai/api/v1/webhook
+  endpointsModeled:
+    - POST /pull-requests/review        # models PR-Agent /review
+    - POST /pull-requests/describe      # models PR-Agent /describe
+    - POST /pull-requests/improve       # models PR-Agent /improve
+    - POST /pull-requests/ask           # models PR-Agent /ask
+    - POST /pull-requests/add-docs      # models PR-Agent /add_docs, /update_changelog
+    - POST /generate/tests              # models Qodo Gen / Qodo Cover test generation
+    - POST /agents/{agent}/run          # models Qodo Command CLI --webhook agent run
+  prCommentCommands:
+    - "/review"
+    - "/describe"
+    - "/improve"
+    - "/ask"
+    - "/add_docs"
+    - "/help_docs"
+    - "/update_changelog"
+sources:
+  - url: https://docs.qodo.ai/
+    type: Documentation
+    note: Qodo platform docs - AI code quality and governance; products overview.
+  - url: https://docs.qodo.ai/code-review
+    type: Documentation
+    note: Qodo Merge (code review) documentation; v2 released Feb 2026.
+  - url: https://docs.qodo.ai/qodo-documentation/qodo-merge/getting-started/setup-and-installation/github/qodo-single-tenant-github
+    type: Documentation
+    note: Single-tenant GitHub webhook path /api/v1/webhook on qodo-merge.<company>.st.qodo.ai.
+  - url: https://github.com/qodo-ai/pr-agent
+    type: SourceCode
+    note: Open-source PR-Agent engine (MIT); CLI, GitHub Action, and webhook server modes.
+  - url: https://github.com/qodo-ai/command
+    type: SourceCode
+    note: Qodo Command / Qodo Gen CLI - npm @qodo/command; --webhook and --mcp modes.
+  - url: https://docs.qodo.ai/qodo-documentation/qodo-command/features/creating-and-managing-agents
+    type: Documentation
+    note: agents.toml agent definitions, mcp.json MCP servers, HTTP/MCP serving.
+  - url: https://www.qodo.ai/pricing/
+    type: Pricing
+    note: Trial (14-day), Pro Team ($30/mo, credit packs), Enterprise (custom).
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket protocol surface exists on any Qodo product. Qodo's public
+    surfaces are an IDE plugin, a webhook-driven Git app invoked by PR comment
+    commands, and a CLI that can serve agents over local HTTP or MCP. The only
+    confirmed documented HTTP endpoint on a Qodo host is the single-tenant Qodo
+    Merge webhook receiver; the remaining capability areas are modeled from the
+    open-source PR-Agent tools and the CLI documentation and flagged x-modeled in
+    the OpenAPI. No AsyncAPI document was created because there is no server-push
+    transport on any Qodo API to model.
