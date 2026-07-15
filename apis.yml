@@ -153,6 +153,8 @@ apis:
     orchestrators such as LangChain. The HTTP surface is self-hosted (default local
     host/port); endpoints are modeled from the CLI documentation.
 common:
+- type: AgenticAccess
+  url: agentic-access/qodo-gen-agentic-access.yml
 - type: Authentication
   url: authentication/qodo-gen-authentication.yml
 - type: DomainSecurity
