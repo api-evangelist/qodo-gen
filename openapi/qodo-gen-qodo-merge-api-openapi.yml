@@ -1,0 +1,171 @@
+openapi: 3.0.3
+info:
+  title: Qodo Platform (Modeled Capability Surfaces) Qodo Command Qodo Merge API
+  description: 'MODELED specification. Qodo (formerly CodiumAI) does not publish a single documented public REST API for its hosted platform. Qodo''s public surfaces are an IDE plugin (Qodo Gen), a Git application driven by webhooks and PR comment commands (Qodo Merge), and a terminal agent runner (Qodo Command / Qodo Gen CLI). This document models those surfaces so they can be catalogued and discovered - each operation carries `x-modeled: true`. Two things are real and documented: (1) the single-tenant Qodo Merge webhook receiver at `/api/v1/webhook`, and (2) the open-source PR-Agent engine (MIT) that powers Qodo Merge, whose tools (/review, /describe, /improve, /ask, /add_docs, /update_changelog) are invoked as pull request comment commands. The Qodo Command CLI can serve any configured agent as a local HTTP API (--webhook) or as an MCP service (--mcp). Do NOT treat the paths below as a stable, vendor-published REST contract - they describe capability areas and the known webhook/CLI surfaces, not a guaranteed API.'
+  version: '1.0'
+  contact:
+    name: Qodo
+    url: https://www.qodo.ai
+  license:
+    name: MIT (PR-Agent engine)
+    url: https://github.com/qodo-ai/pr-agent/blob/main/LICENSE
+servers:
+- url: https://qodo-merge.{tenant}.st.qodo.ai/api/v1
+  description: Qodo Merge single-tenant SaaS. The `/webhook` path here is the real, documented Git webhook receiver. Multi-tenant cloud installs are managed through the Git provider marketplace, not this host.
+  variables:
+    tenant:
+      default: your-company
+      description: Your single-tenant subdomain, provided by your Qodo DevOps team.
+- url: http://localhost:3000
+  description: Local HTTP surface exposed by the Qodo Command CLI when an agent is run with `--webhook`. Host and port are chosen at launch; 3000 is illustrative.
+security:
+- qodoApiKey: []
+- webhookSecret: []
+tags:
+- name: Qodo Merge
+  description: Agentic pull request review Git app (built on open-source PR-Agent).
+paths:
+  /webhook:
+    post:
+      tags:
+      - Qodo Merge
+      summary: Qodo Merge Git webhook receiver (documented)
+      description: Real, documented endpoint for single-tenant Qodo Merge installs. The Git provider (GitHub / GitLab / Bitbucket / Azure DevOps) POSTs pull request and comment events here; Qodo Merge reacts by running review tools and posting results back to the PR. Requests are authenticated with a shared webhook secret configured at install time.
+      operationId: receiveGitWebhook
+      x-modeled: false
+      security:
+      - webhookSecret: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Git provider webhook event payload (pull_request, issue_comment, etc.).
+      responses:
+        '200':
+          description: Event accepted for processing.
+        '401':
+          description: Invalid or missing webhook secret.
+  /pull-requests/review:
+    post:
+      tags:
+      - Qodo Merge
+      summary: Review a pull request (modeled - PR-Agent /review)
+      description: Models the PR-Agent/Qodo Merge "/review" tool, normally invoked as a PR comment command. Analyzes a pull request and posts a structured review (effort estimate, security concerns, tests, review labels).
+      operationId: reviewPullRequest
+      x-modeled: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PullRequestTarget'
+      responses:
+        '200':
+          description: Review generated and posted to the pull request.
+  /pull-requests/describe:
+    post:
+      tags:
+      - Qodo Merge
+      summary: Describe a pull request (modeled - PR-Agent /describe)
+      description: Models the "/describe" tool - generates a PR title, summary, walkthrough, and labels. Normally invoked as a PR comment command.
+      operationId: describePullRequest
+      x-modeled: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PullRequestTarget'
+      responses:
+        '200':
+          description: Description generated and posted to the pull request.
+  /pull-requests/improve:
+    post:
+      tags:
+      - Qodo Merge
+      summary: Suggest code improvements (modeled - PR-Agent /improve)
+      description: Models the "/improve" tool - returns ranked, committable code suggestions for the diff. Normally invoked as a PR comment command.
+      operationId: improvePullRequest
+      x-modeled: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PullRequestTarget'
+      responses:
+        '200':
+          description: Suggestions generated and posted to the pull request.
+  /pull-requests/ask:
+    post:
+      tags:
+      - Qodo Merge
+      summary: Ask a question about a pull request (modeled - PR-Agent /ask)
+      description: Models the "/ask" tool - answers a free-text question about the pull request or specific lines. Normally invoked as a PR comment command.
+      operationId: askPullRequest
+      x-modeled: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+              - $ref: '#/components/schemas/PullRequestTarget'
+              - type: object
+                properties:
+                  question:
+                    type: string
+                    description: The natural-language question to answer.
+      responses:
+        '200':
+          description: Answer generated and posted to the pull request.
+  /pull-requests/add-docs:
+    post:
+      tags:
+      - Qodo Merge
+      summary: Add documentation (modeled - PR-Agent /add_docs and /update_changelog)
+      description: Models the documentation tools - generate docstrings/help docs for changed components and update the changelog. Normally invoked as PR comment commands (/add_docs, /help_docs, /update_changelog).
+      operationId: addDocs
+      x-modeled: true
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PullRequestTarget'
+      responses:
+        '200':
+          description: Documentation generated and posted to the pull request.
+components:
+  schemas:
+    PullRequestTarget:
+      type: object
+      description: Identifies the pull request a Qodo Merge tool acts on.
+      properties:
+        provider:
+          type: string
+          enum:
+          - github
+          - gitlab
+          - bitbucket
+          - azure-devops
+          description: Git provider hosting the pull request.
+        repository:
+          type: string
+          description: Repository in owner/name form.
+        pull_request:
+          type: integer
+          description: Pull request / merge request number.
+  securitySchemes:
+    qodoApiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Qodo API key / token issued from the Qodo dashboard. Used by the CLI and platform surfaces. BYOK (bring your own LLM key) is available on Enterprise. Exact header conventions are not publicly documented; modeled.
+    webhookSecret:
+      type: apiKey
+      in: header
+      name: X-Hub-Signature-256
+      description: Shared secret configured when installing the Qodo Merge Git webhook, verified on each inbound event from the Git provider.

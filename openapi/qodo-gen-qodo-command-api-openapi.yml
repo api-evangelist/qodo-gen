@@ -1,0 +1,70 @@
+openapi: 3.0.3
+info:
+  title: Qodo Platform (Modeled Capability Surfaces) Qodo Command API
+  description: 'MODELED specification. Qodo (formerly CodiumAI) does not publish a single documented public REST API for its hosted platform. Qodo''s public surfaces are an IDE plugin (Qodo Gen), a Git application driven by webhooks and PR comment commands (Qodo Merge), and a terminal agent runner (Qodo Command / Qodo Gen CLI). This document models those surfaces so they can be catalogued and discovered - each operation carries `x-modeled: true`. Two things are real and documented: (1) the single-tenant Qodo Merge webhook receiver at `/api/v1/webhook`, and (2) the open-source PR-Agent engine (MIT) that powers Qodo Merge, whose tools (/review, /describe, /improve, /ask, /add_docs, /update_changelog) are invoked as pull request comment commands. The Qodo Command CLI can serve any configured agent as a local HTTP API (--webhook) or as an MCP service (--mcp). Do NOT treat the paths below as a stable, vendor-published REST contract - they describe capability areas and the known webhook/CLI surfaces, not a guaranteed API.'
+  version: '1.0'
+  contact:
+    name: Qodo
+    url: https://www.qodo.ai
+  license:
+    name: MIT (PR-Agent engine)
+    url: https://github.com/qodo-ai/pr-agent/blob/main/LICENSE
+servers:
+- url: https://qodo-merge.{tenant}.st.qodo.ai/api/v1
+  description: Qodo Merge single-tenant SaaS. The `/webhook` path here is the real, documented Git webhook receiver. Multi-tenant cloud installs are managed through the Git provider marketplace, not this host.
+  variables:
+    tenant:
+      default: your-company
+      description: Your single-tenant subdomain, provided by your Qodo DevOps team.
+- url: http://localhost:3000
+  description: Local HTTP surface exposed by the Qodo Command CLI when an agent is run with `--webhook`. Host and port are chosen at launch; 3000 is illustrative.
+security:
+- qodoApiKey: []
+- webhookSecret: []
+tags:
+- name: Qodo Command
+  description: Terminal agent runner; serve agents as HTTP APIs or MCP services.
+paths:
+  /agents/{agent}/run:
+    post:
+      tags:
+      - Qodo Command
+      summary: Run a Qodo Command agent over HTTP (modeled - CLI --webhook)
+      description: Models the local HTTP surface the Qodo Command CLI exposes when an agent defined in agents.toml is launched with `--webhook`. The agent runs and returns its result. Self-hosted; not a Qodo-hosted endpoint.
+      operationId: runAgent
+      x-modeled: true
+      parameters:
+      - name: agent
+        in: path
+        required: true
+        description: Name of the configured agent (from agents.toml).
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                prompt:
+                  type: string
+                  description: Natural-language input for the agent.
+                arguments:
+                  type: object
+                  description: Arguments declared by the agent.
+      responses:
+        '200':
+          description: Agent run completed and result returned.
+components:
+  securitySchemes:
+    qodoApiKey:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: Qodo API key / token issued from the Qodo dashboard. Used by the CLI and platform surfaces. BYOK (bring your own LLM key) is available on Enterprise. Exact header conventions are not publicly documented; modeled.
+    webhookSecret:
+      type: apiKey
+      in: header
+      name: X-Hub-Signature-256
+      description: Shared secret configured when installing the Qodo Merge Git webhook, verified on each inbound event from the Git provider.
