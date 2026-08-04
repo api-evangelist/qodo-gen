@@ -1,0 +1,18 @@
+{
+  "provider": "qodo-gen",
+  "sources": [
+    "qodo-gen-qodo-command-api-openapi.yml",
+    "qodo-gen-qodo-gen-api-openapi.yml",
+    "qodo-gen-qodo-merge-api-openapi.yml"
+  ],
+  "outputs": [
+    "qodo-gen-qodo-command-api-openapi.yml",
+    "qodo-gen-qodo-gen-api-openapi.yml",
+    "qodo-gen-qodo-merge-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
