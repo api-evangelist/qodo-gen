@@ -136,6 +136,9 @@ apis:
   - type: SourceCode
     url: https://github.com/qodo-ai/command
 common:
+- type: License
+  name: MIT
+  url: https://github.com/qodo-ai/pr-agent/blob/main/LICENSE
 - type: AgenticAccess
   url: agentic-access/qodo-gen-agentic-access.yml
 - type: Authentication
