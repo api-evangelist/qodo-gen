@@ -1,0 +1,41 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qodo Platform (Modeled Capability Surfaces) Qodo Command Qodo Gen API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Qodo Gen",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Generate tests for code (modeled - Qodo Gen / Qodo Cover)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{tenant}.st.qodo.ai/api/v1/generate/tests",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Models Qodo Gen / Qodo Cover test generation - the capability CodiumAI was founded on. Given a function, class, or file, produces unit tests and edge cases. Delivered in practice through the IDE plugin and CLI, not a public REST endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

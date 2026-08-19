@@ -1,0 +1,122 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qodo Platform (Modeled Capability Surfaces) Qodo Command Qodo Merge API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Qodo Merge",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Qodo Merge Git webhook receiver (documented)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{tenant}.st.qodo.ai/api/v1/webhook",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "X-Hub-Signature-256",
+              "value": "{{X-Hub-Signature-256}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Real, documented endpoint for single-tenant Qodo Merge installs. The Git provider (GitHub / GitLab / Bitbucket / Azure DevOps) POSTs pull request and comment events here; Qodo Merge reacts by running review tools and posting results back to the PR. Requests are authenticated with a shared webhook secret configured at install time."
+        },
+        {
+          "info": {
+            "name": "Review a pull request (modeled - PR-Agent /review)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{tenant}.st.qodo.ai/api/v1/pull-requests/review",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Models the PR-Agent/Qodo Merge \"/review\" tool, normally invoked as a PR comment command. Analyzes a pull request and posts a structured review (effort estimate, security concerns, tests, review labels)."
+        },
+        {
+          "info": {
+            "name": "Describe a pull request (modeled - PR-Agent /describe)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{tenant}.st.qodo.ai/api/v1/pull-requests/describe",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Models the \"/describe\" tool - generates a PR title, summary, walkthrough, and labels. Normally invoked as a PR comment command."
+        },
+        {
+          "info": {
+            "name": "Suggest code improvements (modeled - PR-Agent /improve)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{tenant}.st.qodo.ai/api/v1/pull-requests/improve",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Models the \"/improve\" tool - returns ranked, committable code suggestions for the diff. Normally invoked as a PR comment command."
+        },
+        {
+          "info": {
+            "name": "Ask a question about a pull request (modeled - PR-Agent /ask)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{tenant}.st.qodo.ai/api/v1/pull-requests/ask",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Models the \"/ask\" tool - answers a free-text question about the pull request or specific lines. Normally invoked as a PR comment command."
+        },
+        {
+          "info": {
+            "name": "Add documentation (modeled - PR-Agent /add_docs and /update_changelog)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{tenant}.st.qodo.ai/api/v1/pull-requests/add-docs",
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Models the documentation tools - generate docstrings/help docs for changed components and update the changelog. Normally invoked as PR comment commands (/add_docs, /help_docs, /update_changelog)."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

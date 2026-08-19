@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Qodo Platform (Modeled Capability Surfaces) Qodo Command API",
+    "version": "1.0"
+  },
+  "request": {
+    "auth": {
+      "type": "apikey",
+      "key": "Authorization",
+      "value": "{{Authorization}}",
+      "placement": "header"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Qodo Command",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Run a Qodo Command agent over HTTP (modeled - CLI --webhook)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://qodo-merge.{tenant}.st.qodo.ai/api/v1/agents/:agent/run",
+            "params": [
+              {
+                "name": "agent",
+                "value": "",
+                "type": "path",
+                "description": "Name of the configured agent (from agents.toml)."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Models the local HTTP surface the Qodo Command CLI exposes when an agent defined in agents.toml is launched with `--webhook`. The agent runs and returns its result. Self-hosted; not a Qodo-hosted endpoint."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

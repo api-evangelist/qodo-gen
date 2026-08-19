@@ -1,0 +1,768 @@
+{
+  "item": [
+    {
+      "id": "5c0a9530-9a87-4272-bab4-7bb812fa7bff",
+      "name": "Qodo Merge",
+      "description": {
+        "content": "Agentic pull request review Git app (built on open-source PR-Agent).",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "ec25aef5-78ae-46ac-a4e2-91ee58a1df82",
+          "name": "Qodo Merge Git webhook receiver (documented)",
+          "request": {
+            "name": "Qodo Merge Git webhook receiver (documented)",
+            "description": {
+              "content": "Real, documented endpoint for single-tenant Qodo Merge installs. The Git provider (GitHub / GitLab / Bitbucket / Azure DevOps) POSTs pull request and comment events here; Qodo Merge reacts by running review tools and posting results back to the PR. Requests are authenticated with a shared webhook secret configured at install time.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "webhook"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "X-Hub-Signature-256"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "<object>",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e2b8f2f9-767c-44ee-a37b-b243f6e90cf2",
+              "name": "Event accepted for processing.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhook"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Hub-Signature-256",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            },
+            {
+              "id": "4612b1cf-a772-4cf5-ae23-e9b8b8832f9f",
+              "name": "Invalid or missing webhook secret.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "webhook"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "X-Hub-Signature-256",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "<object>",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ce4cf330-cf33-4d51-8eaa-2263be2eb300",
+          "name": "Review a pull request (modeled - PR-Agent /review)",
+          "request": {
+            "name": "Review a pull request (modeled - PR-Agent /review)",
+            "description": {
+              "content": "Models the PR-Agent/Qodo Merge \"/review\" tool, normally invoked as a PR comment command. Analyzes a pull request and posts a structured review (effort estimate, security concerns, tests, review labels).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pull-requests",
+                "review"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "80a22a53-9389-4044-bec1-b2b1bbb18761",
+              "name": "Review generated and posted to the pull request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pull-requests",
+                    "review"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c28b7f1e-f1af-469a-95f7-467390e27696",
+          "name": "Describe a pull request (modeled - PR-Agent /describe)",
+          "request": {
+            "name": "Describe a pull request (modeled - PR-Agent /describe)",
+            "description": {
+              "content": "Models the \"/describe\" tool - generates a PR title, summary, walkthrough, and labels. Normally invoked as a PR comment command.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pull-requests",
+                "describe"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "85d3b9fa-98a4-45fd-8f6d-1a48ad3e7d5f",
+              "name": "Description generated and posted to the pull request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pull-requests",
+                    "describe"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "63435866-599d-4a75-91e6-7696884902cb",
+          "name": "Suggest code improvements (modeled - PR-Agent /improve)",
+          "request": {
+            "name": "Suggest code improvements (modeled - PR-Agent /improve)",
+            "description": {
+              "content": "Models the \"/improve\" tool - returns ranked, committable code suggestions for the diff. Normally invoked as a PR comment command.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pull-requests",
+                "improve"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "505db037-8f6a-4fdd-8087-0119a9b63f99",
+              "name": "Suggestions generated and posted to the pull request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pull-requests",
+                    "improve"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "31024d97-7014-405a-808e-2c42988023d5",
+          "name": "Ask a question about a pull request (modeled - PR-Agent /ask)",
+          "request": {
+            "name": "Ask a question about a pull request (modeled - PR-Agent /ask)",
+            "description": {
+              "content": "Models the \"/ask\" tool - answers a free-text question about the pull request or specific lines. Normally invoked as a PR comment command.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pull-requests",
+                "ask"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\",\n  \"question\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1fe8a10a-7ade-4a5c-a7c6-86c8590a89cb",
+              "name": "Answer generated and posted to the pull request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pull-requests",
+                    "ask"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\",\n  \"question\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "80a9e574-6c5f-40a2-9c65-4c8e36d301ea",
+          "name": "Add documentation (modeled - PR-Agent /add_docs and /update_changelog)",
+          "request": {
+            "name": "Add documentation (modeled - PR-Agent /add_docs and /update_changelog)",
+            "description": {
+              "content": "Models the documentation tools - generate docstrings/help docs for changed components and update the changelog. Normally invoked as PR comment commands (/add_docs, /help_docs, /update_changelog).",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "pull-requests",
+                "add-docs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "e6a4393e-4d89-4a93-b49b-0f8e2998f0ad",
+              "name": "Documentation generated and posted to the pull request.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "pull-requests",
+                    "add-docs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"provider\": \"<string>\",\n  \"repository\": \"<string>\",\n  \"pull_request\": \"<integer>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your-company",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "7e1b24ad-228b-4485-8c49-cc0bf83cab5a",
+    "name": "Qodo Platform (Modeled Capability Surfaces) Qodo Command Qodo Merge API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "MODELED specification. Qodo (formerly CodiumAI) does not publish a single documented public REST API for its hosted platform. Qodo's public surfaces are an IDE plugin (Qodo Gen), a Git application driven by webhooks and PR comment commands (Qodo Merge), and a terminal agent runner (Qodo Command / Qodo Gen CLI). This document models those surfaces so they can be catalogued and discovered - each operation carries `x-modeled: true`. Two things are real and documented: (1) the single-tenant Qodo Merge webhook receiver at `/api/v1/webhook`, and (2) the open-source PR-Agent engine (MIT) that powers Qodo Merge, whose tools (/review, /describe, /improve, /ask, /add_docs, /update_changelog) are invoked as pull request comment commands. The Qodo Command CLI can serve any configured agent as a local HTTP API (--webhook) or as an MCP service (--mcp). Do NOT treat the paths below as a stable, vendor-published REST contract - they describe capability areas and the known webhook/CLI surfaces, not a guaranteed API.\n\nContact Support:\n Name: Qodo",
+      "type": "text/plain"
+    }
+  }
+}

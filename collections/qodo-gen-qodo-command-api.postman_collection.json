@@ -1,0 +1,181 @@
+{
+  "item": [
+    {
+      "id": "bf716372-1605-43f5-b298-bc283b1ea6bd",
+      "name": "Qodo Command",
+      "description": {
+        "content": "Terminal agent runner; serve agents as HTTP APIs or MCP services.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "cb2589da-3400-49aa-8ebd-b79ae7fb4159",
+          "name": "Run a Qodo Command agent over HTTP (modeled - CLI --webhook)",
+          "request": {
+            "name": "Run a Qodo Command agent over HTTP (modeled - CLI --webhook)",
+            "description": {
+              "content": "Models the local HTTP surface the Qodo Command CLI exposes when an agent defined in agents.toml is launched with `--webhook`. The agent runs and returns its result. Self-hosted; not a Qodo-hosted endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "agents",
+                ":agent",
+                "run"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "agent",
+                  "description": "(Required) Name of the configured agent (from agents.toml)."
+                },
+                {
+                  "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"prompt\": \"<string>\",\n  \"arguments\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "80c73143-493b-45cf-800e-09febf90574c",
+              "name": "Agent run completed and result returned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "agents",
+                    ":agent",
+                    "run"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "agent",
+                      "description": "(Required) Name of the configured agent (from agents.toml)."
+                    },
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"prompt\": \"<string>\",\n  \"arguments\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your-company",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "9eb9d10d-02b3-401f-9757-5f4e69794109",
+    "name": "Qodo Platform (Modeled Capability Surfaces) Qodo Command API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "MODELED specification. Qodo (formerly CodiumAI) does not publish a single documented public REST API for its hosted platform. Qodo's public surfaces are an IDE plugin (Qodo Gen), a Git application driven by webhooks and PR comment commands (Qodo Merge), and a terminal agent runner (Qodo Command / Qodo Gen CLI). This document models those surfaces so they can be catalogued and discovered - each operation carries `x-modeled: true`. Two things are real and documented: (1) the single-tenant Qodo Merge webhook receiver at `/api/v1/webhook`, and (2) the open-source PR-Agent engine (MIT) that powers Qodo Merge, whose tools (/review, /describe, /improve, /ask, /add_docs, /update_changelog) are invoked as pull request comment commands. The Qodo Command CLI can serve any configured agent as a local HTTP API (--webhook) or as an MCP service (--mcp). Do NOT treat the paths below as a stable, vendor-published REST contract - they describe capability areas and the known webhook/CLI surfaces, not a guaranteed API.\n\nContact Support:\n Name: Qodo",
+      "type": "text/plain"
+    }
+  }
+}

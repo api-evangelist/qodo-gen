@@ -1,0 +1,165 @@
+{
+  "item": [
+    {
+      "id": "ce0d5991-0863-47f1-9d67-40e1dcbcfcd6",
+      "name": "Qodo Gen",
+      "description": {
+        "content": "AI coding assistant IDE plugin - generation, chat, and test generation.",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "6fe790e0-25b9-4c85-9f60-d51d3cba6f3e",
+          "name": "Generate tests for code (modeled - Qodo Gen / Qodo Cover)",
+          "request": {
+            "name": "Generate tests for code (modeled - Qodo Gen / Qodo Cover)",
+            "description": {
+              "content": "Models Qodo Gen / Qodo Cover test generation - the capability CodiumAI was founded on. Given a function, class, or file, produces unit tests and edge cases. Delivered in practice through the IDE plugin and CLI, not a public REST endpoint.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "generate",
+                "tests"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                  "type": "any",
+                  "value": "{{tenant}}",
+                  "key": "tenant"
+                }
+              ]
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"language\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8a73918b-88a4-4622-b01c-3d018c608439",
+              "name": "Generated tests returned.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "generate",
+                    "tests"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "description": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+                      "type": "any",
+                      "value": "{{tenant}}",
+                      "key": "tenant"
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "<API Key>"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"language\": \"<string>\",\n  \"code\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "text/plain"
+                }
+              ],
+              "body": "",
+              "cookie": [],
+              "_postman_previewlanguage": "text"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "description": {
+        "content": "Your single-tenant subdomain, provided by your Qodo DevOps team.",
+        "type": "text/plain"
+      },
+      "type": "any",
+      "value": "your-company",
+      "key": "tenant"
+    },
+    {
+      "type": "string",
+      "value": "https://qodo-merge.{{tenant}}.st.qodo.ai/api/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "key",
+        "value": "Authorization"
+      },
+      {
+        "key": "value",
+        "value": "{{apiKey}}"
+      },
+      {
+        "key": "in",
+        "value": "header"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "de2771a8-c4d1-4964-b16e-843615b38ee1",
+    "name": "Qodo Platform (Modeled Capability Surfaces) Qodo Command Qodo Gen API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "MODELED specification. Qodo (formerly CodiumAI) does not publish a single documented public REST API for its hosted platform. Qodo's public surfaces are an IDE plugin (Qodo Gen), a Git application driven by webhooks and PR comment commands (Qodo Merge), and a terminal agent runner (Qodo Command / Qodo Gen CLI). This document models those surfaces so they can be catalogued and discovered - each operation carries `x-modeled: true`. Two things are real and documented: (1) the single-tenant Qodo Merge webhook receiver at `/api/v1/webhook`, and (2) the open-source PR-Agent engine (MIT) that powers Qodo Merge, whose tools (/review, /describe, /improve, /ask, /add_docs, /update_changelog) are invoked as pull request comment commands. The Qodo Command CLI can serve any configured agent as a local HTTP API (--webhook) or as an MCP service (--mcp). Do NOT treat the paths below as a stable, vendor-published REST contract - they describe capability areas and the known webhook/CLI surfaces, not a guaranteed API.\n\nContact Support:\n Name: Qodo",
+      "type": "text/plain"
+    }
+  }
+}
