@@ -13,6 +13,20 @@ description: Qodo (formerly CodiumAI) is an AI code quality and integrity platfo
   driven by webhooks and PR comment commands, and a CLI - the hosted platform REST
   surface is gated. The open-source PR-Agent engine (MIT) that powers Qodo Merge is
   self-hostable as a CLI, GitHub Action, or webhook server.
+deliveryModel:
+  model: open-core
+  license: MIT
+  open_source: true
+  commercial: true
+  callable_host: true
+  label: Open core · an OSS project plus a commercial hosted product
+  confidence: high
+  source:
+  - license
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: freemium
   onboarding: self-serve
@@ -147,6 +161,16 @@ apis:
   - type: SourceCode
     url: https://github.com/qodo-ai/command
 common:
+- type: IssueTracker
+  url: https://github.com/qodo-ai/pr-agent/issues
+- type: Releases
+  url: https://github.com/qodo-ai/pr-agent/releases
+- type: SecurityPolicy
+  url: https://github.com/The-PR-Agent/pr-agent/blob/main/SECURITY.md
+- type: CodeOfConduct
+  url: https://github.com/The-PR-Agent/pr-agent/blob/main/CODE_OF_CONDUCT.md
+- type: ContributionGuide
+  url: https://github.com/The-PR-Agent/pr-agent/blob/main/CONTRIBUTING.md
 - type: License
   name: MIT
   url: https://github.com/qodo-ai/pr-agent/blob/main/LICENSE
